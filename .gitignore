@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*build/
+*dist/
+
+# Virtual environment
+venv/
+.venv/
+
+# Database file
+phishing_data.db
+
+# Chrome Profile
+chrome_profile/
+
+# IDE files
+.vscode/
+.idea/ 

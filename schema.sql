@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS credentials;
+
+CREATE TABLE credentials (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  timestamp TEXT NOT NULL,
+  data TEXT NOT NULL
+);

