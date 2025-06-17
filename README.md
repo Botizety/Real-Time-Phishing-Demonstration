@@ -1,69 +1,77 @@
-# Ethical Phishing & Web Security Analysis Tool
+# Real-Time Steam Phishing Proxy (Educational Demo)
 
-**Author:** [Your Name/GitHub Username]  
-**University:** SIIT, Thammasat University  
-**Major:** Computer Engineering & Cyber Security
+This project is a sophisticated phishing toolkit created for educational and research purposes. It demonstrates how a real-time, man-in-the-middle proxy can be set up to intercept credentials and bypass 2-Factor Authentication (2FA) on a modern, JavaScript-heavy website like Steam.
 
----
-
-### **Disclaimer: For Educational Use Only**
-
-This tool was developed as a personal project for educational and research purposes. It is designed to demonstrate the mechanics of Man-in-the-Middle (MITM) attacks, credential harvesting, and session hijacking in a controlled environment. 
-
-**Under no circumstances should this tool be used for any malicious or illegal activities.** The author is not responsible for any misuse of this software. Using this tool against any system without explicit, prior consent is illegal and unethical.
+**This tool is intended strictly for learning and authorized security testing. Using it for any unauthorized or malicious activity is illegal and unethical.**
 
 ---
 
-## Project Overview
+## Core Features
 
-This project is a full-proxy web application written in Python. It is designed to intercept and analyze HTTP/HTTPS traffic between a user and a target website. The primary goal was to gain a practical understanding of web security vulnerabilities and the countermeasures used to prevent them.
+- **Full Site Proxy:** Dynamically proxies the Steam login page, rewriting all links, forms, and scripts on the fly to keep the user within the phishing environment.
+- **Real-Time Credential Capture:** Intercepts username and password submissions without alerting the user.
+- **Automated Backend Login:** Uses a headless Chrome browser (via Selenium) in a background thread to perform a live login with the captured credentials.
+- **Advanced 2FA Handling:**
+    - Detects if a Steam Guard Mobile Authenticator (push notification) is required and waits for the user to approve it on their phone.
+    - If a code is required instead (Steam Guard or email), it dynamically serves a page to capture the 2FA code from the victim.
+- **Session Hijacking:** Successfully captures all session cookies after a valid login, which can be used to take over the authenticated session.
+- **Sophisticated User Experience:**
+    - Displays a realistic "Authenticating..." page that polls the server for the live login status.
+    - Redirects the user to the legitimate Steam website upon successful authentication to complete the illusion.
+- **Data Persistence:** Stores captured credentials, 2FA codes, status, and session cookies in a local SQLite database.
+- **Automatic Database Migration:** The application automatically updates the database schema on startup, ensuring compatibility with new code changes without losing data.
 
-By building this tool, I was able to explore real-world attack vectors and the sophisticated security systems deployed by major web platforms.
+## Technology Stack
 
-## Key Technical Features
+- **Backend:** Python, Flask
+- **Automation:** Selenium with `undetected-chromedriver`
+- **Frontend:** HTML, CSS, JavaScript (for injection and polling)
+- **Database:** SQLite
 
-*   **Full-Proxy Architecture:** Built using Flask, the application acts as a central proxy, forwarding all requests from the user to the target server and sending the responses back to the user.
-*   **Dynamic HTML Rewriting:** Utilizes `BeautifulSoup` to parse and rewrite all HTML content on-the-fly. This ensures that all links (`href`), sources (`src`), and form actions are correctly proxied, keeping the user within the phishing environment.
-*   **Credential & Cookie Harvesting:** Successfully intercepts and logs username/password combinations and authentication cookies submitted via login forms.
-*   **Secure Data Logging:** All captured data is stored locally in a structured SQLite database for later analysis.
-*   **Investigation of Anti-Bot Measures:** The project initially included advanced browser automation with Selenium and `undetected-chromedriver` to study how websites like Steam detect and block automated logins. This provided valuable insight into modern browser fingerprinting and security tactics.
+## How It Works
 
-## Core Technologies Used
+1.  **Proxying:** The Flask server listens for incoming requests. When the victim visits the phishing URL, the server fetches the real Steam login page.
+2.  **Rewriting:** Before sending the page to the victim, the server uses BeautifulSoup to parse the HTML and rewrite all `href`, `src`, and `action` attributes. This ensures all subsequent requests from the victim's browser are routed back through the proxy.
+3.  **Credential Injection:** A custom JavaScript payload is injected into the page to capture credentials when the user clicks the "Sign in" button.
+4.  **Background Automation:** Upon receiving credentials, a background thread starts a Selenium WebDriver instance. It navigates to the real Steam login page, enters the credentials, and handles any 2FA prompts that appear.
+5.  **Status Polling:** The victim is redirected to a waiting page which repeatedly asks the server for the status of the background login attempt.
+6.  **Success/Failure:**
+    - On **success**, the server saves the session cookies, updates the status in the database, and the victim is redirected to the real `steamcommunity.com`.
+    - On **failure**, the error is logged, and the victim sees an error message.
 
-*   **Backend:** Python, Flask
-*   **HTML Parsing:** BeautifulSoup4
-*   **Database:** SQLite3
-*   **HTTP Requests:** `requests` library
-
-## Setup and Installation
+## Setup & Usage
 
 1.  **Clone the repository:**
     ```bash
-    git clone [your-repository-url]
-    cd [repository-name]
+    git clone <your-repo-url>
+    cd <repo-directory>
     ```
 
 2.  **Create and activate a virtual environment:**
     ```bash
     # For Windows
     python -m venv venv
-    venv\Scripts\activate
+    .\venv\Scripts\activate
 
     # For macOS/Linux
     python3 -m venv venv
     source venv/bin/activate
     ```
 
-3.  **Install the required dependencies:**
+3.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
-    *(Note: You will need to create a `requirements.txt` file. See below.)*
 
 4.  **Run the application:**
     ```bash
     python app.py
     ```
-    The server will start on `http://127.0.0.1:5000`. Open this URL in your browser to see the proxied site. Captured credentials can be viewed at `http://127.0.0.1:5000/results`.
 
---- 
+5.  Open a web browser and navigate to `http://127.0.0.1:5000`. You will see the proxied Steam login page.
+
+---
+
+### **Ethical Disclaimer**
+
+The creator of this project is not responsible for any misuse or damage caused by this program. This is a personal project developed for educational purposes to understand and demonstrate cybersecurity principles. **Do not use it for illegal purposes.** 

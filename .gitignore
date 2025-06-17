@@ -3,19 +3,30 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*build/
-*dist/
 
-# Virtual environment
+# Virtual Environment
 venv/
 .venv/
 
-# Database file
-phishing_data.db
+# Instance Folder (contains the database)
+instance/
 
-# Chrome Profile
+# Database files
+*.db
+*.sqlite3
+
+# Credentials & Logs
+auth.txt
+debug_*.png
+*.log
+
+# Local user data
 chrome_profile/
 
-# IDE files
-.vscode/
-.idea/ 
+# Misc
+*.zip
+corrected_code.txt
+obfuscated.js
+1.md
+2.md
+3.md 
